@@ -1,6 +1,9 @@
 # vue-weather
 
-This template should help get you started developing with Vue 3 in Vite.
+A vue weather app 
+
+## Preview URL
+https://main--subtle-quokka-0f64a0.netlify.app/
 
 ## Recommended IDE Setup
 
