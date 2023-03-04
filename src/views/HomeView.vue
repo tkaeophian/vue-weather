@@ -9,7 +9,7 @@
           class="py-2 px-1 w-full bg-transparent border-b focus:border-weather-secondary focus:outline-none placeholder:text-white"
         />
         <ul
-          class="absolute bg-weather-secondary text-white w-full shadow-md py-2 px-4 top-[66px]"
+          class="absolute bg-weather-secondary text-white w-full shadow-md rounded-md py-2 px-4 top-[66px]"
           v-if="mapboxSearchResults"
         >
           <p class="py-2" v-if="searchError">
@@ -33,6 +33,14 @@
           </template>
         </ul>
       </div>
+      <div class="flex flex-col gap-4">
+        <Suspense>
+          <CityList />
+          <template #fallback>
+            <CityCardSkeleton />
+          </template>
+        </Suspense>
+      </div>
     </main>
 </template>
 
@@ -40,6 +48,8 @@
   import { ref } from 'vue';
   import axios from "axios";
   import { useRouter } from 'vue-router';
+  import CityList from '@/components/CityList.vue';
+  import CityCardSkeleton from '@/components/CityCardSkeleton.vue';
   const searchQuery = ref('');
   const queryTimeout = ref();
   const mapboxSearchResults = ref();
@@ -50,10 +60,11 @@
     const [city, state] = searchResult.place_name.split(",");
     router.push({
       name: "cityView",
-      params: { state: state.replaceAll(" ", ""), city: city },
+      params: { state: state.trim().replaceAll(" ", ""), city: city },
       query: {
         lat: searchResult.geometry.coordinates[1],
         lng: searchResult.geometry.coordinates[0],
+        preview: true,
       },
     });
   };
